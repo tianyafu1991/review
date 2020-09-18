@@ -11,5 +11,9 @@
 
     <artifactId>ruoze-spark</artifactId>
 
+    <dependencies>
+
+    </dependencies>
+
 
 </project>
