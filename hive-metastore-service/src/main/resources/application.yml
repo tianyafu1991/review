@@ -1,0 +1,45 @@
+spring:
+  # 环境切换
+  #  profiles:
+  #    active: dev
+  application:
+    name: hive-metastore-service
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+  datasource:
+    # MySQL数据源:
+    name: mysqlDataSource
+    #    url: jdbc:mysql://${MYSQL_HOST:192.168.101.217}:${MYSQL_PORT:3306}/${MYSQL_DATABASE_NAME:data_assert}?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8
+    url: jdbc:mysql://${MYSQL_HOST:192.168.101.217}:${MYSQL_PORT:3308}/${MYSQL_DATABASE_NAME:jkd_v3_data_assert}?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8
+    username: ${MYSQL_USERNAME:dev}
+    password: ${MYSQL_PASSWORD:x1skrFBxdtFl3p4G}
+    #    password: ${MYSQL_PASSWORD:lJZx2Ik5eqX3xBDp}
+    driver-class-name: com.mysql.jdbc.Driver
+    testOnBorrow: true
+    validationQuery: select 1
+
+
+# 端口
+server:
+  port: 9019
+# Mybatis配置
+#mybatis:
+#  type-aliases-package: com.hwinfo.jkdv3earlywarning.business.modal
+#  mapperLocations: classpath:mapper/*.xml
+#  configLocation: classpath:mybatis-config.xml
+
+# mapper插件配置
+#mapper:
+#  mappers: com.hwinfo.jkdv3earlywarning.frame.util.ZyMapper
+#  not-empty: false
+#  identity: MYSQL
+
+# swagger 配置
+#swagger:
+#  show: ${SWAGGER_DISPLAY:true}
+
+# 日志配置
+logging:
+  config: classpath:log4j2.yml
