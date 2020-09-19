@@ -1,6 +1,6 @@
 package com.tianya.bigdata.homework.day20200905
 
-import org.apache.spark.{SparkConf, SparkContext}
+import org.apache.spark.{HashPartitioner, SparkConf, SparkContext}
 
 object CoPartitionedJoinApp {
 
@@ -12,9 +12,9 @@ object CoPartitionedJoinApp {
     val sc = new SparkContext(conf)
 
     val data = Array(1, 2, 3, 4, 5)
-    val rdd1= sc.parallelize(data,10).map(x=>(x,x))
+    val rdd1= sc.parallelize(data,10).map(x=>(x,x)).partitionBy(new HashPartitioner(2))
     val data2 = Array(5,8,9,10,2)
-    val rdd2=sc.parallelize(data2,10).map(x=>(x,x))
+    val rdd2=sc.parallelize(data2,10).map(x=>(x,x)).partitionBy(new HashPartitioner(2))
 
     val rdd3=rdd1.join(rdd2)
     rdd3.foreach(println)
