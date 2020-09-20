@@ -17,7 +17,12 @@
   <url>https://repository.cloudera.com/artifactory/cloudera-repos/</url>
 </repository>
 
-2.修改make-distribution.sh脚本
+2.修改make-distribution.sh脚本,最好修改xmx的那行，增加内存，防止报OOM
+
+修改
+export MAVEN_OPTS="${MAVEN_OPTS:--Xmx4g -XX:ReservedCodeCacheSize=2g}"
+
+
 添加：
 VERSION=2.4.6
 SCALA_VERSION=2.12
@@ -50,5 +55,10 @@ SPARK_HIVE=1
 
 4.编译：
 ./dev/make-distribution.sh --name 2.6.0-cdh5.16.2 --tgz -Phadoop-2.6 -Dhadoop.version=2.6.0-cdh5.16.2 -Dscala.version=2.12.10 -Phive -Phive-thriftserver -Pyarn
+
+5.编译期间需要下载
+https://downloads.lightbend.com/zinc/0.3.15/zinc-0.3.15.tgz
+https://downloads.lightbend.com/scala/2.11.12/scala-2.11.12.tgz
+有时候下载比较慢，提前下载好之后放在$SPARK_HOME/build下面就行
 
 ```

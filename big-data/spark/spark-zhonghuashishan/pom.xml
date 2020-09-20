@@ -33,8 +33,8 @@
     </repositories>
 
     <properties>
-        <scala.binary.version>2.11</scala.binary.version>
-        <spark.version>2.3.3</spark.version>
+        <scala.binary.version>2.12</scala.binary.version>
+        <spark.version>2.4.6</spark.version>
         <hadoop.version>2.6.0</hadoop.version>
         <!-- 文件拷贝时的编码 -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
