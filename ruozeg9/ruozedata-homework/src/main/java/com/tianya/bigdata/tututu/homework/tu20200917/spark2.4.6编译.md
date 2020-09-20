@@ -56,7 +56,7 @@ SPARK_HIVE=1
 4.编译：
 ./dev/make-distribution.sh --name 2.6.0-cdh5.16.2 --tgz -Phadoop-2.6 -Dhadoop.version=2.6.0-cdh5.16.2 -Dscala.version=2.12.10 -Phive -Phive-thriftserver -Pyarn
 
-5.编译期间需要下载
+5.编译期间需要下载(这个是在$SPARK_HOME/build/mvn的脚本中指定的)
 https://downloads.lightbend.com/zinc/0.3.15/zinc-0.3.15.tgz
 https://downloads.lightbend.com/scala/2.11.12/scala-2.11.12.tgz
 有时候下载比较慢，提前下载好之后放在$SPARK_HOME/build下面就行
@@ -97,9 +97,29 @@ user=
 url=
 date=
 
+通过$SPARK_HOME/bin/spark-sql脚本，定位到主入口类：${SPARK_HOME}"/bin/spark-submit --class org.apache.spark.sql.hive.thriftserver.SparkSQLCLIDriver
+遇到第2个坑：运行main方法报错,参考：https://github.com/apache/spark/pull/2876
+java.lang.ClassNotFoundException: com.google.common.cache.CacheLoader
+这个是因为项目父pom文件中guava的scope是provided的，改成runtime即可（注意：修改之后，如果后续要重新编译，编译是过不去的，要重新改回provided才能编译通过）
+<dependency>
+<groupId>com.google.guava</groupId>
+<artifactId>guava</artifactId>
+<version>14.0.1</version>
+<scope>runtime</scope>
+</dependency>
 
-
-
+第3个坑：
+Exception in thread "main" java.lang.NoSuchMethodError: scala.Predef$.refArrayOps([Ljava/lang/Object;)[Ljava/lang/Object;
+	at org.apache.spark.deploy.SparkHadoopUtil$.org$apache$spark$deploy$SparkHadoopUtil$$appendSparkHadoopConfigs(SparkHadoopUtil.scala:470)
+	at org.apache.spark.deploy.SparkHadoopUtil$.org$apache$spark$deploy$SparkHadoopUtil$$appendS3AndSparkHadoopConfigurations(SparkHadoopUtil.scala:462)
+	at org.apache.spark.deploy.SparkHadoopUtil$.newConfiguration(SparkHadoopUtil.scala:436)
+	at org.apache.spark.deploy.SparkHadoopUtil.newConfiguration(SparkHadoopUtil.scala:114)
+	at org.apache.spark.deploy.SparkHadoopUtil.<init>(SparkHadoopUtil.scala:52)
+	at org.apache.spark.deploy.SparkHadoopUtil$.instance$lzycompute(SparkHadoopUtil.scala:392)
+	at org.apache.spark.deploy.SparkHadoopUtil$.instance(SparkHadoopUtil.scala:392)
+	at org.apache.spark.deploy.SparkHadoopUtil$.get(SparkHadoopUtil.scala:413)
+	at org.apache.spark.sql.hive.thriftserver.SparkSQLCLIDriver$.main(SparkSQLCLIDriver.scala:89)
+	at org.apache.spark.sql.hive.thriftserver.SparkSQLCLIDriver.main(SparkSQLCLIDriver.scala)
 
 
 
