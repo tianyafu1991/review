@@ -42,15 +42,8 @@ object ClickApp2 {
       .join(spark.table("click_info"), "product_id")
 
     joinedDF.select("user_id", "category_id").show()
-    /*.select('user_id,'category_id)
-      .show()*/
-
-
 
     spark.stop()
 
-
   }
-
-
 }

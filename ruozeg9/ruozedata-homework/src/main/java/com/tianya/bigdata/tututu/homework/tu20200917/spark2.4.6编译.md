@@ -121,6 +121,34 @@ Exception in thread "main" java.lang.NoSuchMethodError: scala.Predef$.refArrayOp
 	at org.apache.spark.sql.hive.thriftserver.SparkSQLCLIDriver$.main(SparkSQLCLIDriver.scala:89)
 	at org.apache.spark.sql.hive.thriftserver.SparkSQLCLIDriver.main(SparkSQLCLIDriver.scala)
 
+第4个坑：
+参考：https://github.com/apache/spark/pull/4933
+https://issues.apache.org/jira/browse/SPARK-6205
+Exception in thread "main" java.lang.NoClassDefFoundError: org/w3c/dom/ElementTraversal
+继续修改父pom文件，把scope由test改为runtime
+<dependency>
+  <groupId>xml-apis</groupId>
+  <artifactId>xml-apis</artifactId>
+  <version>1.4.01</version>
+  <scope>runtime</scope>
+</dependency>
+
+第5个错：这个很熟悉，就是没指定master，在类启动的时候VM Options加上-Dspark.master=local
+Exception in thread "main" org.apache.spark.SparkException: A master URL must be set in your configuration
+
+第6个坑：(还在这个坑里，改scope没有效果)
+Exception in thread "main" java.lang.NoClassDefFoundError: org/eclipse/jetty/server/handler/ContextHandler
+所有的groupId为org.eclipse.jetty的依赖，scope由provided改为compile
+<dependency>
+<groupId>org.eclipse.jetty</groupId>
+<artifactId>jetty-util</artifactId>
+<version>${jetty.version}</version>
+<scope>compile</scope>
+</dependency>
+这个明明是有的 都能找到对应的.class文件了，意思是jar包冲突了，
+https://github.com/SANSA-Stack/SANSA-Examples/commit/7049662750cddaa29b6d7700c3e6aa28ffc1d222这篇还没来得及看
+坑还没有踩完，继续。。。。。
+
 
 
 

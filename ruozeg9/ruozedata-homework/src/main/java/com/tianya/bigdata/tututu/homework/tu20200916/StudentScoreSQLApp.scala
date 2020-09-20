@@ -2,6 +2,9 @@ package com.tianya.bigdata.tututu.homework.tu20200916
 
 import org.apache.spark.sql.{DataFrame, Dataset, SparkSession}
 
+/**
+ * Spark SQL实现
+ */
 object StudentScoreSQLApp {
 
   def main(args: Array[String]): Unit = {
@@ -34,12 +37,6 @@ object StudentScoreSQLApp {
         |""".stripMargin
 
     spark.sql(sql).show()
-
-
-
-    //    studentScoreDF.show()
-
-
     spark.stop()
   }
 

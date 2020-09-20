@@ -153,18 +153,18 @@
     </build>
 
     <repositories>
-        <repository>
+        <!--<repository>
             <id>aliyun</id>
             <url>http://maven.aliyun.com/nexus/content/groups/public</url>
-        </repository>
+        </repository>-->
         <!-- <repository>
             <id>3rd party</id>
             <url>http://192.168.101.211:8081/nexus/content/repositories/thirdparty/</url>
         </repository> -->
-        <repository>
+        <!--<repository>
             <id>es</id>
             <url>https://artifacts.elastic.co/maven</url>
-        </repository>
+        </repository>-->
         <repository>
             <id>cloudera</id>
             <url>http://repository.cloudera.com/artifactory/cloudera-repos/</url>

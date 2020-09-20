@@ -57,13 +57,7 @@ object ClickApp3 {
 
     spark.sql(sql).write.mode(SaveMode.Overwrite).format("parquet").save(outputPath)
 
-
-
     spark.stop()
 
-
   }
-
-
-
 }

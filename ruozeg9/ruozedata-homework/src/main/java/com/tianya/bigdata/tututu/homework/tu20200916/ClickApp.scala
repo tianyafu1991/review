@@ -4,6 +4,7 @@ import org.apache.spark.sql.{DataFrame, SparkSession}
 
 /**
  * * 使用spark快速求出用户点击过的商品类目。
+ * 小表join小表
  */
 object ClickApp {
 
@@ -40,8 +41,6 @@ object ClickApp {
         |on a.product_id = b.product_id
         |where b.category_id is not null
         |""".stripMargin
-
-
 
     clickDF.printSchema()
     productCategoryDF.printSchema()
