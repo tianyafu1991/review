@@ -61,4 +61,49 @@ https://downloads.lightbend.com/zinc/0.3.15/zinc-0.3.15.tgz
 https://downloads.lightbend.com/scala/2.11.12/scala-2.11.12.tgz
 有时候下载比较慢，提前下载好之后放在$SPARK_HOME/build下面就行
 
+
+IDEA编译：
+
+相关资料，很多未看，可能用得着：
+编译相关：
+http://www.superxiaojie.com/2019/05/17/spark-source-code/
+https://www.coder.work/article/6831950
+3.0spark get_table_req相关：
+https://github.com/HotelsDotCom/waggle-dance/issues/110
+https://stackoverflow.com/questions/63476121/hive-queries-failing-with-unable-to-fetch-table-test-table-invalid-method-name
+
+编译后的坑:
+编译之后，我的所有的spark任务都无法执行，报错：
+org.apache.spark.SparkException: Could not find spark-version-info.properties
+
+解决思路：
+参考了这个http://www.superxiaojie.com/2019/05/17/spark-source-code/，
+但不管用，不过受这个博客启发，直接在spark的github上找spark-version-info.properties的信息
+找到这个类：
+看这个脚本：https://github.com/apache/spark/blob/5264164a67df498b73facae207eda12ee133be7d/build/spark-build-info，应该是因为windows的环境，所以没执行相关的shell脚本导致的
+看这个类：https://github.com/apache/spark/blob/d66a4e82eceb89a274edeb22c2fb4384bed5078b/core/src/main/scala/org/apache/spark/package.scala
+props.getProperty("version", unknownProp),
+props.getProperty("branch", unknownProp),
+props.getProperty("revision", unknownProp),
+props.getProperty("user", unknownProp),
+props.getProperty("url", unknownProp),
+props.getProperty("date", unknownProp)
+所以要手动建一个spark-version-info.properties文件：
+然后里面写上:
+version=2.4.6
+branch=
+revision=
+user=
+url=
+date=
+
+
+
+
+
+
+
+
+
+
 ```

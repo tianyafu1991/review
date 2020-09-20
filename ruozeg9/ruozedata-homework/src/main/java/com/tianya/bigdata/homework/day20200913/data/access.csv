@@ -1,0 +1,11 @@
+ip,method,url,province,city,isp
+36.56.52.28,POST, http://tianyafu143, 安徽省,六安市,电信
+182.81.87.184,GET,http://tianyafu122, 陕西省,榆林市,陕西广电
+106.85.14.88, POST, http://tianyafu273/video/av5216721273?a=b&c=d,重庆, 重庆市,电信
+210.41.216.98,GET,http://tianyafu890, 四川省,成都市,教育网
+36.62.141.50, POST, http://tianyafu831/video/av5216721831,安徽省,滁州市,电信
+210.29.195.178,POST, http://tianyafu523, 江苏省,常州市,教育网
+106.94.152.134,POST, http://tianyafu34,,重庆, 重庆市,电信
+36.63.81.250,GET,http://tianyafu933/video/av5216721933,安徽省,安庆市,电信
+121.76.200.180,GET,http://tianyafu716, 上海, 上海市,有线通
+210.38.69.215,POST, http://tianyafu745, 广东省,广州市,教育网
