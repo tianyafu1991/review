@@ -11,7 +11,27 @@ object StudentScoreRDDApp {
 
     val lineRDD: RDD[String] = spark.sparkContext.textFile(filePath)
 
-    lineRDD.take(10).foreach(println)
+    val studentScoreRDD: RDD[StudentScore] = lineRDD.map(x => {
+      val splits: Array[String] = x.split("\t")
+      if("id".equals(splits(0))){
+        null
+      }else{
+        StudentScore(splits(0).toInt, splits(1).toInt, splits(2), splits(3).toInt)
+      }
+    }).filter(_ != null)
+
+    val pairRDD: RDD[(Int, StudentScore)] = studentScoreRDD.map(x => (x.sno, x))
+
+    val minScoreRDD: RDD[(Int, StudentScore)] = pairRDD.reduceByKey((x, y) => {
+      if ((x.score - y.score >= 0)) y else x
+    })
+
+    val resultRDD: RDD[Int] = minScoreRDD.filter(x => {
+      "chinese".equals(x._2.course)
+    }).map(_._1)
+
+
+    resultRDD.take(10).foreach(println)
 
 
 
@@ -19,3 +39,5 @@ object StudentScoreRDDApp {
   }
 
 }
+
+case class StudentScore(id: Int, sno: Int, course: String, score: Int)

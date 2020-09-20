@@ -45,4 +45,4 @@ object StudentScoreSQLApp {
 
 }
 
-case class StudentScore(id: Int, sno: Int, course: String, score: Int)
+
