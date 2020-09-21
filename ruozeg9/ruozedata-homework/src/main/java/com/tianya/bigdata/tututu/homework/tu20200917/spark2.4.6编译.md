@@ -62,7 +62,7 @@ https://downloads.lightbend.com/scala/2.11.12/scala-2.11.12.tgz
 有时候下载比较慢，提前下载好之后放在$SPARK_HOME/build下面就行
 
 
-IDEA编译：
+IDEA编译：（需要idea安装antlr v4插件）
 
 相关资料，很多未看，可能用得着：
 编译相关：
@@ -73,6 +73,11 @@ https://github.com/HotelsDotCom/waggle-dance/issues/110
 https://stackoverflow.com/questions/63476121/hive-queries-failing-with-unable-to-fetch-table-test-table-invalid-method-name
 
 编译后的坑:
+
+第0个坑：
+编译spark一定要在idea中安装antlr v4插件
+
+第1个坑：
 编译之后，我的所有的spark任务都无法执行，报错：
 org.apache.spark.SparkException: Could not find spark-version-info.properties
 
@@ -98,7 +103,9 @@ url=
 date=
 
 通过$SPARK_HOME/bin/spark-sql脚本，定位到主入口类：${SPARK_HOME}"/bin/spark-submit --class org.apache.spark.sql.hive.thriftserver.SparkSQLCLIDriver
-遇到第2个坑：运行main方法报错,参考：https://github.com/apache/spark/pull/2876
+
+第2个坑：这个坑下面的解决方法也可以，但最好的解决方法参考第6个坑的解决方法
+运行main方法报错,参考：https://github.com/apache/spark/pull/2876
 java.lang.ClassNotFoundException: com.google.common.cache.CacheLoader
 这个是因为项目父pom文件中guava的scope是provided的，改成runtime即可（注意：修改之后，如果后续要重新编译，编译是过不去的，要重新改回provided才能编译通过）
 <dependency>
@@ -109,6 +116,8 @@ java.lang.ClassNotFoundException: com.google.common.cache.CacheLoader
 </dependency>
 
 第3个坑：
+这个坑应该是scala版本不一致引起的，编译的时候已经指定了scala.version，但居然还是发生了这个错，
+最终解决方法，直接修改了父pom的scala.version，直接写死成2.12.10
 Exception in thread "main" java.lang.NoSuchMethodError: scala.Predef$.refArrayOps([Ljava/lang/Object;)[Ljava/lang/Object;
 	at org.apache.spark.deploy.SparkHadoopUtil$.org$apache$spark$deploy$SparkHadoopUtil$$appendSparkHadoopConfigs(SparkHadoopUtil.scala:470)
 	at org.apache.spark.deploy.SparkHadoopUtil$.org$apache$spark$deploy$SparkHadoopUtil$$appendS3AndSparkHadoopConfigurations(SparkHadoopUtil.scala:462)
@@ -121,7 +130,7 @@ Exception in thread "main" java.lang.NoSuchMethodError: scala.Predef$.refArrayOp
 	at org.apache.spark.sql.hive.thriftserver.SparkSQLCLIDriver$.main(SparkSQLCLIDriver.scala:89)
 	at org.apache.spark.sql.hive.thriftserver.SparkSQLCLIDriver.main(SparkSQLCLIDriver.scala)
 
-第4个坑：
+第4个坑：这个坑下面的解决方法也可以，但最好的解决方法参考第6个坑的解决方法
 参考：https://github.com/apache/spark/pull/4933
 https://issues.apache.org/jira/browse/SPARK-6205
 Exception in thread "main" java.lang.NoClassDefFoundError: org/w3c/dom/ElementTraversal
@@ -136,7 +145,7 @@ Exception in thread "main" java.lang.NoClassDefFoundError: org/w3c/dom/ElementTr
 第5个错：这个很熟悉，就是没指定master，在类启动的时候VM Options加上-Dspark.master=local
 Exception in thread "main" org.apache.spark.SparkException: A master URL must be set in your configuration
 
-第6个坑：(还在这个坑里，改scope没有效果)
+第6个坑：
 Exception in thread "main" java.lang.NoClassDefFoundError: org/eclipse/jetty/server/handler/ContextHandler
 所有的groupId为org.eclipse.jetty的依赖，scope由provided改为compile
 <dependency>
@@ -147,7 +156,15 @@ Exception in thread "main" java.lang.NoClassDefFoundError: org/eclipse/jetty/ser
 </dependency>
 这个明明是有的 都能找到对应的.class文件了，意思是jar包冲突了，
 https://github.com/SANSA-Stack/SANSA-Examples/commit/7049662750cddaa29b6d7700c3e6aa28ffc1d222这篇还没来得及看
-坑还没有踩完，继续。。。。。
+这个链接的没看懂，不过不像是解决方法
+解决方法：在启动类的配置选项中，将Include dependencies with "Provided" scope这个选项勾选上就可以解决了
+通过这个解决方法，再回去看上面的坑，有些就是没有必要修改scope的了
+
+第7个坑：
+需要在hive-thriftserver这个项目里面新建一个resources目录并右键mark directory as resources，在里面放上hive-site.xml
+然后需要重新编译，要不然编译目录target中是没有hive-site.xml的，就会导致读取的Hive元数据库是内置的Derby
+
+至此，可以正常在idea中跑Hive SQL了
 
 
 
