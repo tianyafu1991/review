@@ -69,10 +69,10 @@ object ClickApp3 {
     val sql =
       """
         |select a.user_id,a.a_rand_product_id, b.category_id,b.b_rand_product_id from
-        |(select concat(floor(10*rand()),'_',product_id) as a_rand_product_id,user_id from click_info) a
-        |left join
-        |(select concat(floor(10*rand()),'_',product_id) as b_rand_product_id,category_id from product_category_info) b
-        | on a.rand_product_id=b.rand_product_id
+        |(select concat(ceil(1*rand()),'_',product_id) as a_rand_product_id,user_id from click_info) a
+        |full outer join
+        |(select concat(ceil(1*rand()),'_',product_id) as b_rand_product_id,category_id from product_category_info) b
+        | on a.a_rand_product_id=b.b_rand_product_id
         |""".stripMargin
 
     val result: DataFrame = spark.sql(sql)
