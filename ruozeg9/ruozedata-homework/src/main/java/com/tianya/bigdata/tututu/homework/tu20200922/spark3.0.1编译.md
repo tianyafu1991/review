@@ -120,7 +120,33 @@ https://downloads.lightbend.com/scala/2.12.10/scala-2.12.10.tgz
 https://issues.apache.org/jira/browse/SPARK-19545
 通过19545找到https://github.com/apache/spark/pull/16884
 
+其他没有遇到编译上的坑
 
 
+
+
+```
+# 在Linux上部署
+
+```
+[hadoop@hadoop software]$ tar -xvf spark-3.0.1-bin-2.6.0-cdh5.16.2.tgz -C ~/app/
+[hadoop@hadoop software]$ cd ~/app/
+[hadoop@hadoop app]$ ln -s spark-3.0.1-bin-2.6.0-cdh5.16.2 spark
+[hadoop@hadoop app]$ cd ~/app/spark/conf/
+[hadoop@hadoop conf]$ cp spark-env.sh.template spark-env.sh
+[hadoop@hadoop conf]$ cp spark-defaults.conf.template spark-defaults.conf
+[hadoop@hadoop conf]$ vim spark-env.sh
+SPARK_LOCAL_IP=hadoop
+HADOOP_CONF_DIR=/home/hadoop/app/hadoop/etc/hadoop
+export SPARK_HISTORY_OPTS="-Dspark.history.fs.logDirectory=hdfs://hadoop:9000/tmp/logs/spark -Dspark.history.ui.port=7777 -Dspark.history.fs.cleaner.enabled=true"
+
+[hadoop@hadoop conf]$ vim spark-defaults.conf
+spark.master                     local[1]
+spark.eventLog.enabled           true
+spark.eventLog.dir               hdfs://hadoop:9000/tmp/logs/spark
+
+[hadoop@hadoop conf]$ ln -s  /home/hadoop/app/hive/conf/hive-site.xml hive-site.xml
+[hadoop@hadoop conf]$ cd ~/app/spark/bin/
+[hadoop@hadoop conf]$ ./spark-sql --master yarn --jars /home/hadoop/lib/mysql-connector-java-5.1.47.jar 
 
 ```
