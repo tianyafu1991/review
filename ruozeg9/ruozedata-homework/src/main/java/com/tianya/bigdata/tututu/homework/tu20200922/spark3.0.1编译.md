@@ -131,6 +131,7 @@ https://issues.apache.org/jira/browse/SPARK-19545
 ```
 [hadoop@hadoop software]$ tar -xvf spark-3.0.1-bin-2.6.0-cdh5.16.2.tgz -C ~/app/
 [hadoop@hadoop software]$ cd ~/app/
+[hadoop@hadoop01 app]$ rm -rf spark
 [hadoop@hadoop app]$ ln -s spark-3.0.1-bin-2.6.0-cdh5.16.2 spark
 [hadoop@hadoop app]$ cd ~/app/spark/conf/
 [hadoop@hadoop conf]$ cp spark-env.sh.template spark-env.sh
