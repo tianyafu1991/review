@@ -122,10 +122,44 @@ https://issues.apache.org/jira/browse/SPARK-19545
 
 其他没有遇到编译上的坑
 
+```
+#注意
+```
+上面的编译过程是通过指定了-Phive-1.2，所以编译的Hive版本是1.2.1,而spark3.0.1编译时，如果不指定-Phive-1.2 而是指定-Phive，那么Hive版本就是2.3的
+如果编译了Hive的2.3版本，因为Hive2.x与Hive1.x版本的元数据表发生了变化，在编译完之后去访问Hive1.x中的表时，会报错
+具体看这个issues：https://issues.apache.org/jira/browse/SPARK-28711
+解决方案：https://github.com/apache/spark/pull/25431中提到sbin/start-thriftserver.sh --conf spark.sql.hive.metastore.version=1.2 --conf spark.sql.hive.metastore.jars=maven
+所以在启动spark-sql脚本的时候，也可以通过加上这两个参数，通过这2个参数来访问Hive1.x中的数据，第一次查询会报错,后面就没问题了
 
-
+spark的父pom中：
+<profile>
+      <id>hive-1.2</id>
+      <properties>
+        <hive.group>org.spark-project.hive</hive.group>
+        <hive.classifier></hive.classifier>
+        <!-- Version used in Maven Hive dependency -->
+        <hive.version>1.2.1.spark2</hive.version>
+        <!-- Version used for internal directory structure -->
+        <hive.version.short>1.2</hive.version.short>
+        <hive.parquet.scope>${hive.deps.scope}</hive.parquet.scope>
+        <hive.storage.version>2.6.0</hive.storage.version>
+        <hive.storage.scope>provided</hive.storage.scope>
+        <hive.common.scope>provided</hive.common.scope>
+        <hive.llap.scope>provided</hive.llap.scope>
+        <hive.serde.scope>provided</hive.serde.scope>
+        <hive.shims.scope>provided</hive.shims.scope>
+        <orc.classifier>nohive</orc.classifier>
+        <datanucleus-core.version>3.2.10</datanucleus-core.version>
+      </properties>
+    </profile>
+<profile>
+      <id>hive-2.3</id>
+      <!-- Default hive profile. Uses global properties. -->
+    </profile>
 
 ```
+
+
 # 在Linux上部署
 
 ```
