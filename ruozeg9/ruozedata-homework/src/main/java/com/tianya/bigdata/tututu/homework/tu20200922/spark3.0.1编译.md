@@ -130,6 +130,8 @@ https://issues.apache.org/jira/browse/SPARK-19545
 具体看这个issues：https://issues.apache.org/jira/browse/SPARK-28711
 解决方案：https://github.com/apache/spark/pull/25431中提到sbin/start-thriftserver.sh --conf spark.sql.hive.metastore.version=1.2 --conf spark.sql.hive.metastore.jars=maven
 所以在启动spark-sql脚本的时候，也可以通过加上这两个参数，通过这2个参数来访问Hive1.x中的数据，第一次查询会报错,后面就没问题了
+这里还有个小坑：--conf spark.sql.hive.metastore.jars=maven 会从 maven仓库去下相关的jar包，可以用spark.sql.hive.metastore.jars=builtin或者使用第3中方式
+这个参数在http://spark.apache.org/docs/3.0.1/configuration.html上有介绍3种方式
 
 spark的父pom中：
 <profile>
