@@ -20,7 +20,7 @@ https://archive.apache.org/dist/spark/spark-1.5.2/spark-1.5.2.tgz
 (1)显式指定一些版本信息，跳过编译时的一些比较耗时的版本检查，提高编译效率
 显式指定一下版本信息
 VERSION=1.5.2
-SCALA_VERSION=2.11
+SCALA_VERSION=2.10
 SPARK_HADOOP_VERSION=2.6.0-cdh5.16.2
 SPARK_HIVE=1
 
@@ -47,7 +47,7 @@ SPARK_HIVE=1
 
 (2)增加编译时的内存设置，防止OOM
 修改这一行的内存配置，我这里统一放大了一倍
-export MAVEN_OPTS="-Xmx2g -XX:MaxPermSize=4G -XX:ReservedCodeCacheSize=2G"
+export MAVEN_OPTS="-Xmx4g -XX:MaxPermSize=3G -XX:ReservedCodeCacheSize=2G"
 
 3.修改scala的版本(这一步不用执行，spark1.5.2默认scala2.10)
 
