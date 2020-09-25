@@ -21,6 +21,7 @@
         <module>ruoze-zk</module>
         <module>ruoze-spark</module>
         <module>ruoze-shell</module>
+        <module>ruoze-kafka</module>
     </modules>
 
     <name>ruoze-g9</name>
