@@ -24,6 +24,10 @@ object ForeachRDDApp extends Logging {
   }
 
 
+  /**
+   * 最优的一种方式，使用了ConnectionPool+prepareStatement+batch+batch控制数据量的方式
+   * @param result
+   */
   def save2MySQL06(result: DStream[(String, Long)]): Unit = {
     result.foreachRDD(
       rdd => {
