@@ -42,7 +42,7 @@
         <scala.binary.version>2.12</scala.binary.version>
         <spark.version>2.4.6</spark.version>
         <hadoop.version>2.6.0</hadoop.version>
-        <hive.version>1.2.1</hive.version>
+        <hive.version>2.3.4</hive.version>
         <mysql.version>5.1.44</mysql.version>
 
         <!-- 文件拷贝时的编码 -->
