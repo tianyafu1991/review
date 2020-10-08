@@ -23,6 +23,7 @@ http.cors.enabled: true
 http.cors.allow-origin: "*"
 
 # 启动
+[hadoop@hadoop01 ~]$ cd $ELASTICSEARCH_HOME
 [hadoop@hadoop01 elasticsearch]$ ./bin/elasticsearch -d
 
 # 启动报错
